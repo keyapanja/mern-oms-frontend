@@ -156,7 +156,7 @@ function Sidebar() {
                                     <a href={admUri + 'attendances'} className="nav-link" id="attn-nav">
                                         <i className='nav-icon fa fa-clipboard-list'></i>
                                         <p>
-                                            Attendances
+                                            Staff Attendance
                                         </p>
                                     </a>
                                 </HtmlTooltip>

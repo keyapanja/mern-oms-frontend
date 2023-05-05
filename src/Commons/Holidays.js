@@ -5,6 +5,7 @@ import axios from 'axios';
 import GoBack from './GoBack';
 import CommonTable from './CommonTable';
 import { Tooltip } from '@mui/material';
+import GetUserPermissions from './GetUserPermissions';
 
 function Holidays() {
 
@@ -18,6 +19,14 @@ function Holidays() {
 
     //Style the date pickers according to selected theme
     const currentTheme = window.localStorage.getItem('currentOMSTheme');
+
+    var getUser = GetUserPermissions(currentUser.user);
+    const [staffAccess, setStaffAccess] = useState(false);
+    useEffect(() => {
+        if (getUser && getUser.permissions && getUser.permissions.find(per => per === 'Holidays')) {
+            setStaffAccess(true);
+        }
+    }, [getUser])
 
     if (currentTheme === 'dark') {
         const calendarIcon = document.getElementsByClassName('css-i4bv87-MuiSvgIcon-root');
@@ -177,7 +186,7 @@ function Holidays() {
         }
     ]
 
-    if (currentUser.usertype === 'admin') {
+    if (currentUser.usertype === 'admin' || staffAccess) {
         const newCol = {
             name: 'Action',
             selector: (row) => <>
@@ -227,7 +236,7 @@ function Holidays() {
                     <h4 className='card-title m-0'>Holidays</h4>
                     <div className='row card-tools'>
                         {
-                            currentUser && currentUser.usertype === 'admin' &&
+                            ((currentUser && currentUser.usertype === 'admin') || staffAccess) &&
                             <>
                                 <button className='btn btn-primary float-right btn-sm' data-bs-toggle="modal" data-bs-target="#addModal">
                                     <i className='fa fa-plus'></i> New Holiday

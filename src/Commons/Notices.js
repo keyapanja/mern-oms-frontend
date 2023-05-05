@@ -3,6 +3,7 @@ import { reloadWindow, ToastComp } from './ToastComp'
 import axios from 'axios'
 import { formatDate } from './FormatTime'
 import Swal from 'sweetalert2'
+import GetUserPermissions from './GetUserPermissions'
 
 function Notices() {
 
@@ -13,6 +14,14 @@ function Notices() {
     })
 
     const currentUser = JSON.parse(window.sessionStorage.getItem('loggedInUser'));
+
+    var getUser = GetUserPermissions(currentUser.user);
+    const [staffAccess, setStaffAccess] = useState(false);
+    useEffect(() => {
+        if (getUser && getUser.permissions && getUser.permissions.find(per => per === 'Notices')) {
+            setStaffAccess(true);
+        }
+    }, [getUser])
 
     //post content variable
     const [title, setTitle] = useState('');
@@ -124,7 +133,7 @@ function Notices() {
             <h4>Notices</h4>
 
             {
-                currentUser && currentUser.usertype === 'admin' &&
+                ((currentUser && currentUser.usertype === 'admin') || staffAccess) &&
                 <div className='row d-flex justify-content-end'>
                     <div>
                         {
@@ -186,7 +195,7 @@ function Notices() {
                                         <span className='text-sm col-6 py-1'><em>Posted on {formatDate(item.createdAt)}</em></span>
 
                                         <div className='d-flex justify-content-end col-6'>
-                                            {currentUser && currentUser.usertype === 'admin' &&
+                                            {((currentUser && currentUser.usertype === 'admin') || staffAccess) &&
                                                 <div className="btn-group" role="group">
                                                     {
                                                         editable && editable === item._id ?

@@ -65,7 +65,7 @@ function Staff() {
     const deleteStaff = (data) => {
         Swal.fire({
             icon: 'warning',
-            html: `Are you sure you want to delete the employee <em> ${data.fullname}</em> ? <br><br> <span class="text-sm">You won't be able to revert this and all the related data may get affected!</span>`,
+            html: `Are you sure you want to delete the employee <em> ${data.fullname}</em> ? <br><br> <span className="text-sm">You won't be able to revert this and all the related data may get affected!</span>`,
             showCancelButton: true,
             confirmButtonText: 'Yes, Delete!',
             cancelButtonText: 'No, Cancel!',
@@ -223,19 +223,6 @@ function Staff() {
             selector: (row) => <Switch value={row.status} defaultChecked={row.status === 'active' ? true : false} color='info' onClick={() => toggleStatus(row.status, row.staffID, row.fullname)} />
         },
         {
-            name: 'Permissions',
-            selector: (row) => row.permissions && row.permissions.length > 0 && row.permissions[0] !== '' ?
-                <>
-                    <ul className='mb-0'>
-                        {row.permissions.map(permission => {
-                            return <li>{permission}</li>
-                        })}
-                    </ul>
-                    <button className='btn btn-link btn-sm' onClick={() => permModelUpdate(row)} data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i className='fa fa-edit mr-1'></i>Edit</button>
-                </>
-                : <button className='btn btn-link' data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => permModel(row)}><i className='fa fa-plus'></i> Add</button>
-        },
-        {
             name: 'Action',
             selector: (row) => {
                 return <>
@@ -247,6 +234,26 @@ function Staff() {
             }
         }
     ]
+
+
+    const currentUser = JSON.parse(window.sessionStorage.getItem('loggedInUser'));
+
+    if (currentUser.usertype === 'admin') {
+        const newCol = {
+            name: 'Permissions',
+            selector: (row) => row.permissions && row.permissions.length > 0 && row.permissions[0] !== '' ?
+                <>
+                    <ul className='mb-0'>
+                        {row.permissions.map(permission => {
+                            return <li>{permission}</li>
+                        })}
+                    </ul>
+                    <button className='btn btn-link btn-sm' onClick={() => permModelUpdate(row)} data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i className='fa fa-edit mr-1'></i>Edit</button>
+                </>
+                : <button className='btn btn-link' data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => permModel(row)}><i className='fa fa-plus'></i> Add</button>
+        }
+        columns.splice(-1, 0, newCol);
+    }
 
     return (
         <>
@@ -285,61 +292,61 @@ function Staff() {
                                 <div className='px-2'>
                                     <div className='row my-2'>
                                         <div className='col'>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="select" />
-                                                <label class="form-check-label" for="select" onClick={selectAll}>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="checkbox" id="select" />
+                                                <label className="form-check-label" htmlFor="select" onClick={selectAll}>
                                                     Select All
                                                 </label>
                                             </div>
                                         </div>
                                         <div className='col'>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="clear" />
-                                                <label class="form-check-label" for="clear" onClick={clearAll}>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="checkbox" id="clear" />
+                                                <label className="form-check-label" htmlFor="clear" onClick={clearAll}>
                                                     Clear All
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Projects" />
-                                        <label class="form-check-label" for="Projects">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" id="Projects" />
+                                        <label className="form-check-label" htmlFor="Projects">
                                             Projects
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Staff" />
-                                        <label class="form-check-label" for="Staff">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" id="Staff" />
+                                        <label className="form-check-label" htmlFor="Staff">
                                             Staff
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Attendance" />
-                                        <label class="form-check-label" for="Attendance">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" id="Attendance" />
+                                        <label className="form-check-label" htmlFor="Attendance">
                                             Attendance
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Leaves" />
-                                        <label class="form-check-label" for="Leaves">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" id="Leaves" />
+                                        <label className="form-check-label" htmlFor="Leaves">
                                             Leave Management
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Reports" />
-                                        <label class="form-check-label" for="Reports">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" id="Reports" />
+                                        <label className="form-check-label" htmlFor="Reports">
                                             Reports
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Holidays" />
-                                        <label class="form-check-label" for="Holidays">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" id="Holidays" />
+                                        <label className="form-check-label" htmlFor="Holidays">
                                             Holidays
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Notices" />
-                                        <label class="form-check-label" for="Notices">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" id="Notices" />
+                                        <label className="form-check-label" htmlFor="Notices">
                                             Notices
                                         </label>
                                     </div>

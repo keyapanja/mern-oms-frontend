@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import StringAvatar from '../../Commons/StringAvatar';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import { Tooltip, tooltipClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
@@ -119,6 +120,40 @@ function Sidebar() {
                                 </HtmlTooltip>
                             </li>
 
+                            {/* Employees */}
+                            {
+                                getUser.permissions && getUser.permissions.find(permission => permission === 'Staff') &&
+                                <li className="nav-item" id="staff-menu">
+                                    <HtmlTooltip title="Employees">
+                                        <span className="nav-link text-dark" id="staff-parent-nav">
+                                            <i className=' fa fa-users nav-icon'></i>
+                                            <p>
+                                                Employees
+                                                <i className="right fas fa-angle-left"></i>
+                                            </p>
+                                        </span>
+                                    </HtmlTooltip>
+                                    <ul className="nav nav-treeview">
+                                        <HtmlTooltip title="Add Employee">
+                                            <li className="nav-item">
+                                                <a href={empUri + 'add-employee'} className="nav-link" id="add-staff-nav">
+                                                    <i className="fa fa-user-plus nav-icon"></i>
+                                                    <p>Add Employee</p>
+                                                </a>
+                                            </li>
+                                        </HtmlTooltip>
+                                        <HtmlTooltip title="Employees List">
+                                            <li className="nav-item">
+                                                <a href={empUri + 'employees'} className="nav-link" id="staff-nav">
+                                                    <i className="fa fa-user-group nav-icon"></i>
+                                                    <p>Employees List</p>
+                                                </a>
+                                            </li>
+                                        </HtmlTooltip>
+                                    </ul>
+                                </li>
+                            }
+
                             {/* Attendances */}
                             <li className="nav-item" >
                                 <HtmlTooltip title="Attendances">
@@ -131,13 +166,62 @@ function Sidebar() {
                                 </HtmlTooltip>
                             </li>
 
+                            {/* Attendances */}
+                            {
+                                getUser.permissions && getUser.permissions.find(permission => permission === 'Attendance') &&
+                                <li className="nav-item" >
+                                    <HtmlTooltip title="Staff Attendance">
+                                        <a href={empUri + 'staff-attendance'} className="nav-link" id="attn-nav">
+                                            <i className='nav-icon fa fa-clipboard-list'></i>
+                                            <p>
+                                                Staff Attendance <span className='text-sm text-info'>(Admin)</span>
+                                            </p>
+                                        </a>
+                                    </HtmlTooltip>
+                                </li>
+                            }
+
+                            {/* Projects */}
+                            {
+                                getUser.permissions && getUser.permissions.find(permission => permission === 'Projects') &&
+                                <li className="nav-item" id="project-menu">
+                                    <HtmlTooltip title="Projects (Admin)">
+                                        <a href={empUri + 'projects'} className="nav-link" id="project-parent-nav">
+                                            <i className='nav-icon fa fa-sheet-plastic'></i>
+                                            <p>
+                                                Projects <span className='text-sm text-info'>(Admin)</span>
+                                                <i className="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                    </HtmlTooltip>
+                                    <ul className="nav nav-treeview">
+                                        <HtmlTooltip title="Add Project">
+                                            <li className="nav-item">
+                                                <a href={empUri + 'add-project'} className="nav-link" id="add-project-nav">
+                                                    <i className="fa fa-file-circle-plus nav-icon"></i>
+                                                    <p>Add Project</p>
+                                                </a>
+                                            </li>
+                                        </HtmlTooltip>
+                                        <HtmlTooltip title="Projects List">
+                                            <li className="nav-item">
+                                                <a href={empUri + 'projects-admin'} className="nav-link" id="projects-nav">
+                                                    <i className="fa fa-laptop-file nav-icon"></i>
+                                                    <p>Projects List</p>
+                                                </a>
+                                            </li>
+                                        </HtmlTooltip>
+                                    </ul>
+                                </li>
+                            }
+
                             {/* Projects */}
                             <li className="nav-item" >
-                                <HtmlTooltip title="Projects">
+                                <HtmlTooltip title="My Projects">
                                     <a href={empUri + 'projects'} className="nav-link" id="project-nav">
                                         <i className='nav-icon fa fa-sheet-plastic'></i>
                                         <p>
-                                            Projects
+                                            My Projects
                                         </p>
                                     </a>
                                 </HtmlTooltip>
@@ -167,13 +251,52 @@ function Sidebar() {
                                 </HtmlTooltip>
                             </li>
 
+                            {/* Leave Management */}
+                            {
+                                getUser.permissions && getUser.permissions.find(permission => permission === 'Leaves') &&
+                                <li className="nav-item" >
+                                    <HtmlTooltip title="Leave Management">
+                                        <a href={empUri + 'leave-management'} className="nav-link" id="leaves-nav">
+                                            <i className='nav-icon fa fa-scroll'></i>
+                                            <p>
+                                                Leave Management <span className='text-sm text-info'>(Admin)</span>
+                                            </p>
+                                        </a>
+                                    </HtmlTooltip>
+                                </li>
+                            }
+
+                            {/* Reports */}
+                            {
+                                getUser.permissions && getUser.permissions.find(permission => permission === 'Reports') &&
+                                <li li className="nav-item" id="report-menu">
+                                    <HtmlTooltip title="Reports">
+                                        <span className="nav-link text-dark" id="report-parent-nav">
+                                            <AssessmentIcon className='nav-icon' />
+                                            <p>
+                                                Reports <span className='text-sm text-info'>(Admin)</span>
+                                                <i className="right fas fa-angle-left"></i>
+                                            </p>
+                                        </span>
+                                    </HtmlTooltip>
+                                    <ul className="nav nav-treeview">
+                                        <li className="nav-item">
+                                            <a href={empUri + "reports/projects"} className="nav-link" id='project-report-nav'>
+                                                <i className="fa fa-bars-progress nav-icon"></i>
+                                                <p>Projects Report</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+
                             {/* Holidays */}
                             <li className="nav-item" >
                                 <HtmlTooltip title="Holidays">
                                     <a href={'/staff/holidays'} className="nav-link" id="holiday-nav">
                                         <i className='nav-icon fa fa-umbrella-beach'></i>
                                         <p>
-                                            Holidays
+                                            Holidays {getUser.permissions && getUser.permissions.find(permission => permission === 'Holidays') && <span className='text-sm text-info'>(Admin)</span>}
                                         </p>
                                     </a>
                                 </HtmlTooltip>
@@ -185,7 +308,7 @@ function Sidebar() {
                                     <a href={empUri + 'notices'} className="nav-link" id="notice-nav">
                                         <i className='nav-icon fa fa-bullhorn'></i>
                                         <p>
-                                            Notices
+                                            Notices {getUser.permissions && getUser.permissions.find(permission => permission === 'Notices') && <span className='text-sm text-info'>(Admin)</span>}
                                         </p>
                                     </a>
                                 </HtmlTooltip>
@@ -207,7 +330,7 @@ function Sidebar() {
                         </ul>
                     </nav>
                 </div>
-            </aside>
+            </aside >
         </>
     )
 }
