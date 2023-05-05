@@ -7,6 +7,7 @@ import { Box } from '@mui/system';
 import { ToastComp } from '../Commons/ToastComp';
 import LoginIcon from '@mui/icons-material/Login';
 import axios from 'axios';
+import { Buffer } from 'buffer';
 
 function LoginPage() {
 
@@ -25,7 +26,7 @@ function LoginPage() {
             setIsLoading(true);
             axios.post(process.env.REACT_APP_BACKEND + 'users/login', {
                 'username': username,
-                'password': btoa(pass)
+                'password': Buffer.from(pass).toString('base64')
             })
                 .then((res) => {
                     setIsLoading(false);

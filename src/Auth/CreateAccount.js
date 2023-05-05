@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { ToastComp } from '../Commons/ToastComp';
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
+import { Buffer } from 'buffer';
 
 function CreateAccount() {
 
@@ -55,7 +56,7 @@ function CreateAccount() {
         } else {
             axios.post(process.env.REACT_APP_BACKEND + 'users/create-account', {
                 'username': username.toLowerCase(),
-                'password': btoa(password),
+                'password': Buffer.from(password).toString('base64'),
                 'userType': 'staff',
                 'email': getEmail,
                 'staffID': getStaffId

@@ -5,6 +5,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { checkTimeValidity } from '../Commons/FormatTime';
 import { ToastComp } from '../Commons/ToastComp';
 import axios from 'axios';
+import { Buffer } from 'buffer';
 
 function ResetPass() {
 
@@ -35,7 +36,7 @@ function ResetPass() {
         } else {
             axios.post(process.env.REACT_APP_BACKEND + 'users/change-password', {
                 email: email,
-                password: btoa(password),
+                password: Buffer.from(password).toString('base64'),
             })
                 .then((res) => {
                     setIsLoading(false)
