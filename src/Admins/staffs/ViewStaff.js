@@ -90,6 +90,27 @@ function ViewStaff() {
         }
     }
 
+    //Fetch staff login data
+    const [loginData, setLoginData] = useState('');
+    const [seeLogin, setSeeLogin] = useState(false);
+    useEffect(() => {
+        const getStaff = async () => {
+            const staff = await axios.get(process.env.REACT_APP_BACKEND + 'users/get-user-by-staffID/' + getStaffID);
+            const data = staff.data;
+            setLoginData(data);
+        }
+
+        getStaff();
+    }, [getStaffID])
+
+    const handleLoginView = () => {
+        if (seeLogin) {
+            setSeeLogin(false);
+        } else {
+            setSeeLogin(true);
+        }
+    }
+
     return (
         <>
             <div className='mb-3 mt-2 d-flex justify-content-start w-100'>
@@ -120,6 +141,22 @@ function ViewStaff() {
                                             <span className='m-0'><Skeleton /></span>
                                         </div>
                                     </>
+                            }
+                        </div>
+                    </div>
+                    <div className='card'>
+                        <div className='card-body text-center'>
+                            <button className='btn btn-link text-bold d-block w-100 text-center' onClick={handleLoginView}>
+                                {!seeLogin ? <i className='fa fa-eye mr-1'></i> : <i className='fa fa-eye-slash mr-1'></i>}
+                                Login Details
+                            </button>
+                            {
+                                seeLogin && loginData &&
+                                <>
+                                    <b>Username: </b><span>{loginData.username}</span>
+                                    <br />
+                                    <b>Password: </b><span>{atob(loginData.password)}</span>
+                                </>
                             }
                         </div>
                     </div>
