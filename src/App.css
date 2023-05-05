@@ -1,38 +1,270 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500&display=swap');
+
+body {
+  font-family: 'Nunito', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+::-webkit-scrollbar {
+  width: 7px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
 }
 
-.App-link {
-  color: #61dafb;
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar-link-active {
+  color: whitesmoke;
+  background: #1976d2;
+}
+
+span.active {
+  color: whitesmoke !important;
+}
+
+.sidebar-link-active svg {
+  color: whitesmoke;
+}
+
+hr {
+  color: #9a9898;
+  background-color: #9a9898;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 10px 0;
+  padding: 0;
+}
+
+.cardHover:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  transition: 0.2s ease-in-out;
+}
+
+.card-title {
+  font-size: 1.3rem;
+}
+
+[data-tag="allowRowEvents"],
+[role="columnheader"]>div {
+  white-space: normal !important;
+  text-overflow: unset !important;
+}
+
+div.MuiStack-root.css-1xhypcz-MuiStack-root {
+  padding-top: 0 !important;
+}
+
+[inputmode='text'] {
+  padding: 8px !important;
+}
+
+[inputmode='tel'] {
+  padding: 8px !important;
+}
+
+.pdf-container {
+  width: 500px;
+  height: auto;
+  padding: '20px';
+  margin: 0 auto;
+}
+
+.plaintext {
+  border: none;
+  padding: 25px;
+  background: transparent;
+  border-radius: 0;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.float-label {
+  margin-bottom: 20px;
+  position: relative;
+  border-bottom: 1px solid #ddd;
+}
+
+.float-input {
+  width: 100%;
+  padding: 10px 0px;
+  margin-top: 30px;
+  border: none;
+  outline: none;
+  padding: 7px 13px;
+  background: transparent !important;
+  text-transform: capitalize;
+  font-weight: 550;
+}
+
+.float-input::placeholder {
+  opacity: 0;
+}
+
+.float-span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(30px);
+  font-size: 1em;
+  transition-duration: 300ms;
+  padding: 7px 13px;
+  font-weight: normal;
+}
+
+.float-label:focus-within>.float-span,
+.float-input:not(:placeholder-shown)+.float-span {
+  transform: translateY(0px);
+  font-size: 0.88em;
+  color: rgb(12, 161, 161);
+}
+
+.float-label:focus-within {
+  border-bottom: 1px solid rgb(12, 161, 161);
+}
+
+input.form-transparent {
+  background: transparent !important;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  display: inline-block;
+  width: auto;
+  margin: 0 10px;
+}
+
+textarea.form-transparent {
+  background: transparent !important;
+}
+
+select.form-transparent>option {
+  background: transparent !important;
+}
+
+.datalist-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 105%;
+  max-height: 100px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.datalist-list option {
+  border: 1px solid #ddd;
+  padding: 5px;
+  cursor: pointer;
+}
+
+datalist option:hover,
+datalist option:focus {
+  color: #000;
+  background-color: #ddd;
+  outline: 0 none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.sidebar-search-results .search-title strong.text-light {
+  color: rgb(12, 161, 161) !important;
+  font-weight: bold;
+}
+
+input[type='radio'].priority-radio {
+  margin-right: 12px;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+}
+
+.text-high {
+  color: #d32f2f !important;
+}
+
+.text-medium {
+  color: #ed6c02 !important;
+}
+
+.text-low {
+  color: #ffa000 !important;
+}
+
+.select__control {
+  background: transparent !important;
+}
+
+.select__multi-value {
+  background: #eeeeee !important;
+}
+
+.select__multi-value__remove svg {
+  fill: #555;
+}
+
+.select__input-container {
+  color: #0091ea !important;
+}
+
+.select__menu {
+  background: whitesmoke !important;
+  color: #555;
+}
+
+.notification-bg {
+  background-color: #17a2b81a;
+}
+
+.info-box {
+  transition: 0.3s ease-in-out;
+}
+
+.info-box:hover {
+  transform: scale(1.03);
+  transition: 0.3s ease-in-out;
+}
+
+.card-hover {
+  transition: 0.3s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: scale(1.02);
+  transition: 0.3 ease-in-out;
+}
+
+.MuiStack-root {
+  padding-top: 0;
 }
