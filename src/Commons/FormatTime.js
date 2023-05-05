@@ -50,9 +50,9 @@ export function formatDate(date) {
 }
 
 export function formatCurrency(amount, code) {
-    return parseInt(amount).toLocaleString('en-US', {
+    return parseInt(amount || '00').toLocaleString('en-US', {
         style: 'currency',
-        currency: code
+        currency: code || 'USD'
     })
 }
 

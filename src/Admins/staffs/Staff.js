@@ -87,6 +87,89 @@ function Staff() {
             })
     }
 
+    //Add Permissions
+    const permModel = (data) => {
+        if (document.getElementById('staffName')) {
+            document.getElementById('staffName').innerHTML = data.fullname;
+        }
+        if (document.getElementById('staffID')) {
+            document.getElementById('staffID').value = data.staffID;
+        }
+    }
+
+    const Permissions = ['Projects', 'Staff', 'Leaves', 'Attendance', 'Reports', 'Holidays', 'Notices'];
+
+    const selectAll = () => {
+        for (let index = 0; index < Permissions.length; index++) {
+            const element = Permissions[index];
+            document.getElementById(element).checked = true;
+        }
+        document.getElementById('clear').checked = false;
+    }
+
+    const clearAll = () => {
+        for (let index = 0; index < Permissions.length; index++) {
+            const element = Permissions[index];
+            document.getElementById(element).checked = false;
+        }
+        document.getElementById('select').checked = false;
+    }
+
+    const clearForm = () => {
+        if (document.getElementById('permForm')) {
+            document.getElementById('permForm').reset();
+        }
+        setIsLoading(false);
+    }
+
+    const [isLoading, setIsLoading] = useState(false);
+    const addPerm = () => {
+        setIsLoading(true);
+        const newArr = [];
+        for (let index = 0; index < Permissions.length; index++) {
+            const element = Permissions[index];
+            if (document.getElementById(element).checked === true) {
+                newArr.push(element);
+            }
+        }
+        if (newArr.length > 0) {
+            axios.post(process.env.REACT_APP_BACKEND + 'staff/add-permissions/' + document.getElementById('staffID').value, {
+                permissions: newArr
+            })
+                .then((res) => {
+                    ToastComp(res.data.status, res.data.msg);
+                    setIsLoading(false);
+                    if (res.data.status === 'success') {
+                        reloadWindow();
+                    }
+                })
+                .catch((err) => {
+                    ToastComp('error', err.message);
+                    setIsLoading(false);
+                })
+            // console.log(newArr)
+        } else {
+            ToastComp('error', 'Please select at least one checkbox!');
+            setIsLoading(false);
+        }
+    }
+
+    const permModelUpdate = (data) => {
+        if (document.getElementById('staffName')) {
+            document.getElementById('staffName').innerHTML = data.fullname;
+        }
+        if (document.getElementById('staffID')) {
+            document.getElementById('staffID').value = data.staffID;
+        }
+        if (data.permissions.length > 0) {
+            for (let index = 0; index < data.permissions.length; index++) {
+                const element = data.permissions[index];
+                document.getElementById(element).checked = true;
+            }
+        }
+    }
+
+
     //Columns for database
     const columns = [
         {
@@ -104,7 +187,8 @@ function Staff() {
                 }
 
                 return <Avatar sx={{ width: 35, height: 35 }} src={icon} alt={row.fullname}></Avatar>
-            }
+            },
+            width: '7%'
         },
         {
             name: 'Name',
@@ -139,6 +223,19 @@ function Staff() {
             selector: (row) => <Switch value={row.status} defaultChecked={row.status === 'active' ? true : false} color='info' onClick={() => toggleStatus(row.status, row.staffID, row.fullname)} />
         },
         {
+            name: 'Permissions',
+            selector: (row) => row.permissions && row.permissions.length > 0 && row.permissions[0] !== '' ?
+                <>
+                    <ul className='mb-0'>
+                        {row.permissions.map(permission => {
+                            return <li>{permission}</li>
+                        })}
+                    </ul>
+                    <button className='btn btn-link btn-sm' onClick={() => permModelUpdate(row)} data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i className='fa fa-edit mr-1'></i>Edit</button>
+                </>
+                : <button className='btn btn-link' data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => permModel(row)}><i className='fa fa-plus'></i> Add</button>
+        },
+        {
             name: 'Action',
             selector: (row) => {
                 return <>
@@ -168,6 +265,90 @@ function Staff() {
                             <div className='table-responsive'>
                                 {CommonTable('Staff List', columns, StaffList, ['fullname', 'designation'])}
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Add Permissions - <span id="staffName"></span></h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={clearForm}></button>
+                        </div>
+                        <div className="modal-body">
+                            <form id="permForm">
+                                <input type="hidden" id="staffID"></input>
+                                <h6>Select one or more areas to give access to the staff:</h6>
+                                <div className='px-2'>
+                                    <div className='row my-2'>
+                                        <div className='col'>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="select" />
+                                                <label class="form-check-label" for="select" onClick={selectAll}>
+                                                    Select All
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className='col'>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="clear" />
+                                                <label class="form-check-label" for="clear" onClick={clearAll}>
+                                                    Clear All
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Projects" />
+                                        <label class="form-check-label" for="Projects">
+                                            Projects
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Staff" />
+                                        <label class="form-check-label" for="Staff">
+                                            Staff
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Attendance" />
+                                        <label class="form-check-label" for="Attendance">
+                                            Attendance
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Leaves" />
+                                        <label class="form-check-label" for="Leaves">
+                                            Leave Management
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Reports" />
+                                        <label class="form-check-label" for="Reports">
+                                            Reports
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Holidays" />
+                                        <label class="form-check-label" for="Holidays">
+                                            Holidays
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Notices" />
+                                        <label class="form-check-label" for="Notices">
+                                            Notices
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={clearForm}>Close</button>
+                            <button type="button" className="btn btn-primary" onClick={addPerm} disabled={isLoading} >Allow Access</button>
                         </div>
                     </div>
                 </div>

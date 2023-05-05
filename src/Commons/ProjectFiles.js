@@ -158,7 +158,7 @@ function ProjectFiles() {
                                                         <td>{item.name}</td>
                                                         <td className='text-center'>
                                                             <Tooltip title='Download'>
-                                                                <a className='btn btn-outline-success btn-sm mx-1' target="_blank" rel="noreferrer" href={process.env.REACT_APP_UPLOADS + 'projects/' + item.path}>
+                                                                <a className='btn btn-outline-success btn-sm mx-1' target="_blank" rel="noreferrer" download={item.name} href={process.env.REACT_APP_UPLOADS + 'projects/' + item.path}>
                                                                     <i className='fa fa-download'></i>
                                                                 </a>
                                                             </Tooltip>

@@ -104,7 +104,7 @@ function AddProject() {
         e.preventDefault();
         setSaveStatus(true);
 
-        if (name && client && Desc && projectID && teamStaff && client) {
+        if (name && client && Desc && projectID && teamStaff) {
             const formData = {
                 name: name,
                 projectID: projectID,
@@ -182,6 +182,7 @@ function AddProject() {
                                             <input className='form-control form-transparent' type='number' placeholder='00,000' value={budget} onChange={(e) => setBudget(e.target.value)}></input>
 
                                             <select id="currency" className='form-control d-inline-block bg-light border-0' style={{ width: 'auto', WebkitAppearance: 'menulist' }} value={cur} onChange={(e) => setCur(e.target.value)}>
+                                                <option value="">Currency</option>
                                                 {
                                                     CurrencyList.length > 0 ?
                                                         CurrencyList.map((item) => {
