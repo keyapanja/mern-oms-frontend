@@ -31,6 +31,13 @@ export function PrintStaff(data) {
                     <td style="padding: 5px;">${data.dob}</td>
                     <td style="padding: 5px;">${data.qualification}</td>
                 </tr>
+                ${data.course &&
+        <tr>
+            <td></td>
+            <td></td>
+            <td style={{ padding: '0 5px', fontSize: 'smaller' }}>{data.course}</td>
+        </tr>
+        }
             </table>
             <table style="width: 100%; text-align: left; font-size: 1.05rem; margin-top: 10px;">
                 <tr>
@@ -86,7 +93,7 @@ export function PrintStaff(data) {
     </html>`);
     a.document.close();
     a.print();
-    
+
     return a;
 }
 

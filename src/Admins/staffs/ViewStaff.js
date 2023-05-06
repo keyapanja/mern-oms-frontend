@@ -195,6 +195,8 @@ function ViewStaff() {
                                             <div className='col-md-4 col-sm-12 my-1'>
                                                 <label className='d-block mb-1'><i className='fa fa-graduation-cap mr-1'></i> Highest Qualification</label>
                                                 <span className='ml-4 pl-1'>{staffData.qualification}</span>
+                                                <br />
+                                                <div className='pl-4 ml-1 text-sm'>{staffData.course && staffData.course}</div>
                                             </div>
                                             <div className='col-md-4 col-sm-12 my-1'>
                                                 <label className='d-block mb-1'><i className=' fa fa-location-dot mr-1'></i> Address</label>

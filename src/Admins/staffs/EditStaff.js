@@ -68,6 +68,7 @@ function EditStaff() {
             setFname(data.father);
             setGender(data.gender);
             setHq(data.qualification);
+            setCourse(data.course);
             setAddress(data.address);
             setPhone(data.mobile);
             setEmail(data.email);
@@ -152,6 +153,7 @@ function EditStaff() {
     const [fname, setFname] = useState('');
     const [gender, setGender] = useState('');
     const [hq, setHq] = useState('');
+    const [course, setCourse] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -178,6 +180,7 @@ function EditStaff() {
                 'gender': gender,
                 'dob': formatDate(dob),
                 'qualification': hq,
+                'course': course,
                 'address': address,
                 'mobile': phone,
                 'email': email,
@@ -276,9 +279,26 @@ function EditStaff() {
                                         <div className='col-md-6 col-sm-12'>
                                             <div className='form-group mb-3'>
                                                 <label>Highest Qualification <span className='text-orange'>*</span></label>
-                                                <input required className='form-control' placeholder="Employee's Highest Qualification" value={hq} onChange={(e) => setHq(e.target.value)} ></input>
+                                                <select className='form-control form-select' value={hq} onChange={(e) => setHq(e.target.value)}>
+                                                    <option value='' disabled>--Select One--</option>
+                                                    <option value='10th'>10th</option>
+                                                    <option value='12th'>12th</option>
+                                                    <option value='Graduation/Diploma'>Graduation/Diploma</option>
+                                                    <option value="Post Graduation">Post Graduation</option>
+                                                    <option value="Doctorate">Doctorate</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
                                             </div>
                                         </div>
+                                        {
+                                            hq &&
+                                            <div className='col-md-6 col-sm-12'>
+                                                <div className='form-group mb-3'>
+                                                    <label>Course / Stream</label>
+                                                    <input className='form-control' placeholder='Course / Stream' value={course} onChange={(e) => setCourse(e.target.value)} ></input>
+                                                </div>
+                                            </div>
+                                        }
                                         <div className='col-12'>
                                             <div className='form-group mb-3'>
                                                 <label>Address</label>
