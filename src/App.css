@@ -266,5 +266,5 @@ input[type='radio'].priority-radio {
 }
 
 .MuiStack-root {
-  padding-top: 0;
+  padding-top: 0 !important;
 }
