@@ -8,6 +8,7 @@ import { reloadWindow, ToastComp } from '../../Commons/ToastComp';
 import parse from 'html-react-parser';
 import ProjectTasks from './ProjectTasks';
 import ProjectFiles from '../../Commons/ProjectFiles';
+import GetUserPermissions from '../../Commons/GetUserPermissions';
 
 function ViewProject() {
 
@@ -19,6 +20,14 @@ function ViewProject() {
 
     //get current user
     const currentUser = JSON.parse(window.sessionStorage.getItem('loggedInUser'));
+    var getUser = GetUserPermissions(currentUser.user);
+    const [staffAccess, setStaffAccess] = useState(false);
+    useEffect(() => {
+        if (getUser && getUser.permissions && getUser.permissions.find(per => per === 'Projects')) {
+            setStaffAccess(true);
+        }
+    }, [getUser])
+
 
     //get project id from url
     const queryString = window.location.search;
@@ -161,6 +170,23 @@ function ViewProject() {
         setTaskTable(taskTable => [...taskTable])
     }
 
+    //Change project status
+    const projectStatus = (status) => {
+        if (status) {
+            axios.post(process.env.REACT_APP_BACKEND + 'projects/change-status/' + projectID, { status: status })
+                .then((res) => {
+                    ToastComp(res.data.status, res.data.msg)
+                    if (res.data.status === 'success') {
+                        reloadWindow();
+                    }
+                })
+                .catch((err) => {
+                    ToastComp('error', err.message);
+                })
+            // console.log(status);
+        }
+    }
+
     //Save all the tasks
     const saveTasks = (e) => {
         e.preventDefault();
@@ -220,7 +246,7 @@ function ViewProject() {
                     <GoBack />
                     <div className='mr-2'>
                         <div className='btn-group' role='group'>
-                            <a className='btn btn-primary btn-sm' href={'/admin/edit-project?project_id=' + projectID}>
+                            <a className='btn btn-primary btn-sm' href={(currentUser && currentUser.usertype === 'staff' && staffAccess ? '/staff' : '/admin') + '/edit-project?project_id=' + projectID}>
                                 <i className='fa fa-edit mr-1'></i> Edit
                             </a>
                             {/* <button className='btn btn-sm btn-info'>
@@ -239,6 +265,15 @@ function ViewProject() {
                                         <span>#{projectData.projectID}</span>
                                     </div>
                                     <div className='card-body'>
+
+                                        <div className='my-2 d-flex justify-content-center align-items-center'>
+                                            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+                                                <button type="button" className="btn btn-warning" onClick={() => projectStatus('Yet to Start')}>Yet to Start</button>
+                                                <button type="button" className="btn btn-info" onClick={() => projectStatus('On-Going')}>On-Going</button>
+                                                <button type="button" className="btn btn-secondary" onClick={() => projectStatus('On-Hold')}>On-Hold</button>
+                                                <button type="button" className="btn btn-success" onClick={() => projectStatus('Completed')}>Completed</button>
+                                            </div>
+                                        </div>
 
                                         <p>
                                             {projectData.budget &&

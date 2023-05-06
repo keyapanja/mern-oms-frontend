@@ -23,6 +23,8 @@ import ViewAttn from '../Admins/attendances/ViewAttn';
 import ProjectsList from '../Admins/projects/ProjectsList';
 import AddProject from '../Admins/projects/AddProject';
 import ProjectReport from '../Admins/reports/ProjectReport';
+import EditProject from '../Admins/projects/EditProject';
+import ViewLeaves from '../Admins/leaves/ViewLeaves';
 
 function AdminRoutes() {
 
@@ -59,7 +61,9 @@ function AdminRoutes() {
               <Route exact path='/holidays' element={<Holidays />}></Route>
               <Route exact path='/leaves' element={<Leaves />}></Route>
               <Route exact path='/leave-management' element={<StaffLeaves />}></Route>
+              <Route exact path='/view-leaves' element={<ViewLeaves />}></Route>
               <Route exact path='/view-project' element={<ViewProject />}></Route>
+              <Route exact path='/edit-project' element={<EditProject />}></Route>
               <Route exact path='/reports/projects' element={<ProjectReport />}></Route>
               <Route exact path='*' element={<PageNotFound />}></Route>
             </Routes>

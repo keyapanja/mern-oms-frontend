@@ -5,6 +5,7 @@ import CommonTable from '../../Commons/CommonTable';
 import Swal from 'sweetalert2';
 import { reloadWindow, ToastComp } from '../../Commons/ToastComp';
 import Switch from '@mui/material/Switch';
+import GetUserPermissions from '../../Commons/GetUserPermissions';
 
 function Staff() {
 
@@ -19,6 +20,17 @@ function Staff() {
             document.getElementById('staff-menu').classList.add('menu-open');
         }
     })
+
+    const currentUser = JSON.parse(window.sessionStorage.getItem('loggedInUser'));
+
+    var getUser = GetUserPermissions(currentUser.user);
+    const [staffAccess, setStaffAccess] = useState(false);
+    useEffect(() => {
+        if (getUser && getUser.permissions && getUser.permissions.find(per => per === 'Staff')) {
+            setStaffAccess(true);
+        }
+    }, [getUser])
+
 
     //Toggle switch and status
     const toggleStatus = (status, ID, name) => {
@@ -132,26 +144,23 @@ function Staff() {
                 newArr.push(element);
             }
         }
-        if (newArr.length > 0) {
-            axios.post(process.env.REACT_APP_BACKEND + 'staff/add-permissions/' + document.getElementById('staffID').value, {
-                permissions: newArr
+
+        axios.post(process.env.REACT_APP_BACKEND + 'staff/add-permissions/' + document.getElementById('staffID').value, {
+            permissions: newArr
+        })
+            .then((res) => {
+                ToastComp(res.data.status, res.data.msg);
+                setIsLoading(false);
+                if (res.data.status === 'success') {
+                    reloadWindow();
+                }
             })
-                .then((res) => {
-                    ToastComp(res.data.status, res.data.msg);
-                    setIsLoading(false);
-                    if (res.data.status === 'success') {
-                        reloadWindow();
-                    }
-                })
-                .catch((err) => {
-                    ToastComp('error', err.message);
-                    setIsLoading(false);
-                })
-            // console.log(newArr)
-        } else {
-            ToastComp('error', 'Please select at least one checkbox!');
-            setIsLoading(false);
-        }
+            .catch((err) => {
+                ToastComp('error', err.message);
+                setIsLoading(false);
+            })
+        // console.log(newArr)
+
     }
 
     const permModelUpdate = (data) => {
@@ -226,17 +235,14 @@ function Staff() {
             name: 'Action',
             selector: (row) => {
                 return <>
-                    <a href={'/admin/edit-employee?staff_id=' + row.staffID} className='btn btn-sm my-1 btn-primary'><i className='fa fa-edit'></i></a>
-                    <a href={'/admin/view-employee?staff_id=' + row.staffID} className='btn btn-sm my-1 mx-1 btn-info'><i className='fa fa-eye'></i></a>
+                    <a href={(currentUser && currentUser.usertype === 'staff' && staffAccess ? '/staff' : '/admin') + '/edit-employee?staff_id=' + row.staffID} className='btn btn-sm my-1 btn-primary'><i className='fa fa-edit'></i></a>
+                    <a href={(currentUser && currentUser.usertype === 'staff' && staffAccess ? '/staff' : '/admin') + '/view-employee?staff_id=' + row.staffID} className='btn btn-sm my-1 mx-1 btn-info'><i className='fa fa-eye'></i></a>
                     <button className='btn btn-sm my-1 btn-danger' onClick={() => deleteStaff(row)
                     }> <i className='fa fa-trash'></i></button >
                 </>
             }
         }
     ]
-
-
-    const currentUser = JSON.parse(window.sessionStorage.getItem('loggedInUser'));
 
     if (currentUser.usertype === 'admin') {
         const newCol = {

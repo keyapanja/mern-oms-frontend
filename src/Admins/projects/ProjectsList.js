@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import CommonTable from '../../Commons/CommonTable';
 import { reloadWindow, SwalComp, ToastComp } from '../../Commons/ToastComp';
+import GetUserPermissions from '../../Commons/GetUserPermissions';
 
 function ProjectsList() {
 
@@ -17,6 +18,15 @@ function ProjectsList() {
             document.getElementById('project-menu').classList.add('menu-open');
         }
     })
+
+    const currentUser = JSON.parse(window.sessionStorage.getItem('loggedInUser'));
+    var getUser = GetUserPermissions(currentUser.user);
+    const [staffAccess, setStaffAccess] = useState(false);
+    useEffect(() => {
+        if (getUser && getUser.permissions && getUser.permissions.find(per => per === 'Projects')) {
+            setStaffAccess(true);
+        }
+    }, [getUser])
 
     //Fetch projects from database
     const [projectsList, setProjectsList] = useState([]);
@@ -89,7 +99,7 @@ function ProjectsList() {
                                     sx={{ width: 24, height: 24, cursor: 'pointer', bgcolor: '#17a2b8' }}
                                     alt={item.name}
                                     src={icon}
-                                    onClick={() => window.location.href = `/admin/view-employee?staff_id=` + item.staffID}
+                                    onClick={() => window.location.href = `${(currentUser && currentUser.usertype === 'staff' && staffAccess ? '/staff' : '/admin')}/view-employee?staff_id=` + item.staffID}
                                 ></Avatar>
                             </Tooltip>
                         })
@@ -101,8 +111,8 @@ function ProjectsList() {
             name: 'Action',
             selector: (row) => {
                 return <>
-                    <Tooltip title="Edit Project"><a className='btn btn-sm btn-primary' href={'/admin/edit-project?project_id=' + row.projectID}><i className='fa fa-edit'></i></a></Tooltip>
-                    <Tooltip title="View Project"><a href={'/admin/view-project?project_id=' + row.projectID} className='btn btn-sm btn-info mx-1'><i className='fa fa-eye'></i></a></Tooltip>
+                    <Tooltip title="Edit Project"><a className='btn btn-sm btn-primary' href={(currentUser && currentUser.usertype === 'staff' && staffAccess ? '/staff' : '/admin') + '/edit-project?project_id=' + row.projectID}><i className='fa fa-edit'></i></a></Tooltip>
+                    <Tooltip title="View Project"><a href={(currentUser && currentUser.usertype === 'staff' && staffAccess ? '/staff' : '/admin') + '/view-project?project_id=' + row.projectID} className='btn btn-sm btn-info mx-1'><i className='fa fa-eye'></i></a></Tooltip>
                     <Tooltip title="Delete Project"><button className='btn btn-sm btn-danger' onClick={() => deleteProject(row)}><i className='fa fa-trash'></i></button></Tooltip>
                 </>
             }
