@@ -27,17 +27,10 @@ export function PrintStaff(data) {
                     <th style="width: 33%;">Highest Qualification</th>
                 </tr>
                 <tr>
-                    <td style="padding: 5px;">${data.father}</td>
-                    <td style="padding: 5px;">${data.dob}</td>
-                    <td style="padding: 5px;">${data.qualification}</td>
+                    <td style="padding: 5px; vertical-align: top;">${data.father}</td>
+                    <td style="padding: 5px; vertical-align: top;">${data.dob}</td>
+                    <td style="padding: 5px;">${data.qualification} ${data.course ? '- ' + data.course : ''}</td>
                 </tr>
-                ${data.course &&
-        <tr>
-            <td></td>
-            <td></td>
-            <td style={{ padding: '0 5px', fontSize: 'smaller' }}>{data.course}</td>
-        </tr>
-        }
             </table>
             <table style="width: 100%; text-align: left; font-size: 1.05rem; margin-top: 10px;">
                 <tr>
