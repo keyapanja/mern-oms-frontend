@@ -2,6 +2,7 @@ import { Tooltip } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { reloadWindow, SwalComp, ToastComp } from './ToastComp';
+import { saveAs } from 'file-saver';
 
 function ProjectFiles() {
 
@@ -73,6 +74,11 @@ function ProjectFiles() {
                         .catch((err) => ToastComp('error', err.message))
                 }
             })
+    }
+
+    //Download a particular file
+    const downloadFile = (path, name) => {
+        saveAs(path, name);
     }
 
     return (
@@ -157,10 +163,15 @@ function ProjectFiles() {
                                                     return <tr key={item._id}>
                                                         <td>{item.name}</td>
                                                         <td className='text-center'>
-                                                            <Tooltip title='Download'>
-                                                                <a className='btn btn-outline-success btn-sm mx-1' target="_blank" rel="noreferrer" download={item.name} href={process.env.REACT_APP_UPLOADS + 'projects/' + item.path}>
-                                                                    <i className='fa fa-download'></i>
+                                                            <Tooltip title='View'>
+                                                                <a className='btn btn-outline-info btn-sm' target="_blank" rel="noreferrer" href={process.env.REACT_APP_UPLOADS + 'projects/' + item.path}>
+                                                                    <i className='fa fa-eye'></i>
                                                                 </a>
+                                                            </Tooltip>
+                                                            <Tooltip title='Download'>
+                                                                <button className='btn btn-outline-success btn-sm mx-1' onClick={() => downloadFile(process.env.REACT_APP_UPLOADS + 'projects/' + item.path, item.name)}>
+                                                                    <i className='fa fa-download'></i>
+                                                                </button>
                                                             </Tooltip>
                                                             {
                                                                 (item.uploadedBy === currentUser.staffID || currentUser.staffID === 'Admin') &&

@@ -76,7 +76,7 @@ export function PrintStaff(data) {
                     <th style="width: 67%;">Skills</th>
                 </tr>
                 <tr>
-                    <td style="padding: 5px;">${data.ExpLevel + '(' + data.ExpYears + ' years)'}</td>
+                    <td style="padding: 5px;">${data.ExpLevel + ' (' + data.ExpYears + ' years)'}</td>
                     <td style="padding: 5px;">${data.skills}</td>
                 </tr>
             </table>
