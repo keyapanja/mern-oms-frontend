@@ -267,11 +267,32 @@ function ViewProject() {
                                     <div className='card-body'>
 
                                         <div className='my-2 d-flex justify-content-center align-items-center'>
-                                            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-                                                <button type="button" className="btn btn-warning" onClick={() => projectStatus('Yet to Start')}>Yet to Start</button>
-                                                <button type="button" className="btn btn-info" onClick={() => projectStatus('On-Going')}>On-Going</button>
-                                                <button type="button" className="btn btn-secondary" onClick={() => projectStatus('On-Hold')}>On-Hold</button>
-                                                <button type="button" className="btn btn-success" onClick={() => projectStatus('Completed')}>Completed</button>
+                                            <div className='text-center'>
+                                                <div>
+                                                    <h6 className='d-inline-block mr-2'>Project Status </h6>
+                                                    {
+                                                        projectData.status && projectData.status === 'Yet to Start' &&
+                                                        <span className='badge badge-sm badge-warning'>Yet to Start</span>
+                                                    }
+                                                    {
+                                                        projectData.status && projectData.status === 'On-Going' &&
+                                                        <span className='badge badge-sm badge-info'>On-Going</span>
+                                                    }
+                                                    {
+                                                        projectData.status && projectData.status === 'On-Hold' &&
+                                                        <span className='badge badge-sm badge-secondary'>On-Hold</span>
+                                                    }
+                                                    {
+                                                        projectData.status && projectData.status === 'Completed' &&
+                                                        <span className='badge badge-sm badge-warning'>Completed</span>
+                                                    }
+                                                </div>
+                                                <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+                                                    <button type="button" className="btn btn-warning" onClick={() => projectStatus('Yet to Start')} disabled={projectData.status && projectData.status === 'Yet to Start'} >Yet to Start</button>
+                                                    <button type="button" className="btn btn-info" onClick={() => projectStatus('On-Going')} disabled={projectData.status && projectData.status === 'On-Going'}>On-Going</button>
+                                                    <button type="button" className="btn btn-secondary" onClick={() => projectStatus('On-Hold')} disabled={projectData.status && projectData.status === 'On-Hold'}>On-Hold</button>
+                                                    <button type="button" className="btn btn-success" onClick={() => projectStatus('Completed')} disabled={projectData.status && projectData.status === 'Completed'}>Completed</button>
+                                                </div>
                                             </div>
                                         </div>
 

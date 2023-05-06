@@ -44,6 +44,26 @@ function Projects() {
             sortable: true
         },
         {
+            name: 'Status',
+            selector: (row) => {
+                if (row.status && row.status === 'Yet to Start') {
+                    return <span className='badge badge-sm badge-warning'>Yet to Start</span>
+                }
+                else if (row.status && row.status === 'On-Going') {
+                    return <span className='badge badge-sm badge-info'>On-Going</span>
+                }
+                else if (row.status && row.status === 'On-Hold') {
+                    return <span className='badge badge-sm badge-secondary'>On-Hold</span>
+                }
+                else if (row.status && row.status === 'Completed') {
+                    return <span className='badge badge-sm badge-warning'>Completed</span>
+                }
+                else {
+                    return <span>_</span>
+                }
+            }
+        },
+        {
             name: 'Action',
             selector: (row) => <Tooltip title="View Details"><a className='btn btn-sm btn-info' href={'/staff/view-project?project_id=' + row.projectID}><i className='fa fa-eye'></i></a></Tooltip>
         }

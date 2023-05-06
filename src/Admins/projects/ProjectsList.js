@@ -39,6 +39,25 @@ function ProjectsList() {
         fetchProjects();
     }, [])
 
+    //Filter projects by status
+    const changeFilter = (status) => {
+        if (status && status !== "All") {
+            const fetchProjects = async () => {
+                const projects = await axios.get(process.env.REACT_APP_BACKEND + 'projects/projects-by-status/' + status);
+                setProjectsList(projects.data);
+            }
+
+            fetchProjects();
+        } else if (status && status === 'All') {
+            const fetchProjects = async () => {
+                const projects = await axios.get(process.env.REACT_APP_BACKEND + 'projects/get-projects');
+                setProjectsList(projects.data);
+            }
+    
+            fetchProjects();
+        }
+    }
+
     //Delete Project
     const deleteProject = (data) => {
         SwalComp('warning', `Are you sure you want to delete the project <em>${data.name}</em> ? <br> <span class='text-sm'>You won't be able to revert this and all the related data may get affected!</span>`, 'Yes, Delete !', 'No, Cancel !')
@@ -73,6 +92,26 @@ function ProjectsList() {
             sortable: true
         },
         {
+            name: 'Status',
+            selector: (row) => {
+                if (row.status && row.status === 'Yet to Start') {
+                    return <span className='badge badge-sm badge-warning'>Yet to Start</span>
+                }
+                else if (row.status && row.status === 'On-Going') {
+                    return <span className='badge badge-sm badge-info'>On-Going</span>
+                }
+                else if (row.status && row.status === 'On-Hold') {
+                    return <span className='badge badge-sm badge-secondary'>On-Hold</span>
+                }
+                else if (row.status && row.status === 'Completed') {
+                    return <span className='badge badge-sm badge-warning'>Completed</span>
+                }
+                else {
+                    return <span>_</span>
+                }
+            }
+        },
+        {
             name: 'Client / Company',
             selector: (row) => row.client,
             sortable: true
@@ -80,9 +119,9 @@ function ProjectsList() {
         {
             name: 'Team',
             selector: (row) => {
-                return <AvatarGroup total={row.team.length} max={8}>
+                return <AvatarGroup total={row.team ? row.team.length : 0} max={8}>
                     {
-                        row.team.map((item) => {
+                        row.team && row.team.map((item) => {
                             var icon = '';
                             if (item) {
                                 if (item.pfp === 'maleIcon1.png') {
@@ -126,9 +165,19 @@ function ProjectsList() {
                     <div className='card-header d-flex align-items-center justify-content-between'>
                         <h4 className='card-title w-50'>Projects</h4>
                         <div className='card-tools w-50'>
-                            <a className='btn btn-primary btn-sm float-right' href='/admin/add-project'>
-                                <i className='fa fa-plus'></i> Add New Project
-                            </a>
+                            <div className='d-flex justify-content-end align-items-center'>
+                                <select className='form-control form-select w-50 mr-2' onChange={(e) => changeFilter(e.target.value)} defaultValue=''>
+                                    <option value='' disabled>Filter By Status</option>
+                                    <option value="Yet to Start">Yet to Start</option>
+                                    <option value="On-Going">On-Going</option>
+                                    <option value='On-Hold'>On-Hold</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="All">All</option>
+                                </select>
+                                <a className='btn btn-primary btn-sm float-right' href='/admin/add-project'>
+                                    <i className='fa fa-plus'></i> Add New Project
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div className='card-body'>
