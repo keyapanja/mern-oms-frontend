@@ -43,7 +43,7 @@ function Sidebar() {
                 <span className="brand-link d-flex justify-content-between align-items-center">
                     <div className='d-flex align-items-center justify-content-start'>
                         {
-                            company.logo ?
+                            company && company.logo && company.logo ?
                                 <img src={process.env.REACT_APP_UPLOADS + 'company/' + company.logo} className="brand-image img-circle elevation-3" alt={company.company_name}></img>
                                 : <span className="brand-image img-circle elevation-3">
                                     {
