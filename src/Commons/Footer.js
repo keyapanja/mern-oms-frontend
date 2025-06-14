@@ -4,7 +4,7 @@ function Footer() {
     return (
         <>
             <footer className="main-footer">
-                <strong>Developed By <a href="https://webdomnet.in" target='_blank' rel="noreferrer" className='text-info'>Webdomnet</a>.</strong> All rights reserved.
+                <strong>Developed By <a href="#" target='_blank' rel="noreferrer" className='text-info'>KP</a>.</strong> All rights reserved.
             </footer>
         </>
     )
